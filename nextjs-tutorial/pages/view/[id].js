@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Loader } from "semantic-ui-react";
 import Item from "../../src/component/Item";
 
-const Post = ({ item }) => {  // ssr props에서 받아온 item
+const Post = ({ item, name }) => {  // ssr props에서 받아온 item
   // item을 받아오기 때문에 필요 x
   // const router = useRouter();
   // const { id } = router.query;
@@ -53,6 +53,7 @@ const Post = ({ item }) => {  // ssr props에서 받아온 item
             <title>{item.name}</title>
             <meta name="description" content={item.description}></meta>
           </Head>
+          {name} 환경입니다
           <Item item={item} />
         </>
       )}
@@ -66,6 +67,7 @@ export default Post;
 
 // context - 여러 정보들이 담겨있는 곳
 export async function getServerSideProps(context) {
+  // 브라우저 환경 x 서버에서 동작
   const id = context.params.id;
   const apiUrl = `http://makeup-api.herokuapp.com/api/v1/products/${id}.json`;
   const res = await axios.get(apiUrl);
@@ -76,6 +78,8 @@ export async function getServerSideProps(context) {
     // 컴포넌트 실행할때 응답값을 해당 페이지의 props로 줄 수 있음
     props: {
       item: data,
+      // 환경 상태 표시
+      name: process.env.name
     },
   };
 }
