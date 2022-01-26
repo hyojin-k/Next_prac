@@ -13,6 +13,8 @@ export default function Gnb(){
       activeItem = 'home';
     }else if(router.pathname === '/about'){
       activeItem = 'about';
+    }else if(router.pathname === '/admin'){
+      activeItem = 'admin';
     }
 
     function goLink(e, data) { //data는 각 Menu.Item 에 들어있는 정보
@@ -41,6 +43,14 @@ export default function Gnb(){
             active={activeItem === 'contact'}
             onClick={() =>{
               router.push('/contact')
+            }}
+          />
+
+          <Menu.Item
+            name='Admin'
+            active={activeItem === 'admin'}
+            onClick={() =>{
+              router.push('/admin')
             }}
           />
         </Menu>
