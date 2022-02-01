@@ -13,12 +13,10 @@ export default function App({Component, pageProps}) {
             <Component {...pageProps} />
 
             {/* global 스타일 설정하여 전역으로 적용 */}
-            <style jsx global>{`
-                a {
-                    color: yellow;
-                }
+            {/* <style jsx global>{`
+            
             `}    
-            </style>
+            </style> */}
         </Layout>
     )
 }
