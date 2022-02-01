@@ -21,10 +21,15 @@ module.exports = {
   // api key를 숨길 때 사용
   async rewrites(){
     return [
-      {
+      { // 메인페이지
         source : '/api/movies',
         destination: `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}`
-      }
+      },
+      { // detail 페이지
+        source : '/api/movies/:id',
+        // source에 들어가는 명칭과 등일하게 
+        destination: `https://api.themoviedb.org/3/movie/:id?api_key=${API_KEY}`
+      },
     ]
   }
 }
