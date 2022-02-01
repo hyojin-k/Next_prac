@@ -6,36 +6,37 @@ import Seo from '../components/Seo'
 // noex.config.js에서 rewrites를 사용하여 api key를 숨김
 // const API_KEY = 'api_key';
 
-export default function Home(){
-  const [movies, setMovies] = useState();
 
-  useEffect(() =>{
-    (async () =>{
-      // data안의 results
-      const { results } = await (await fetch(
-        // 가짜 url 주소(next.config.js 에서 진짜 데이터를 받아옴 )
-        `/api/movies`
-      )).json();
+export default function Home({results}){ // SSR props로 받아온 results
+  // const [movies, setMovies] = useState();
 
-      // const response = await fetch(
-      //   `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}`
-      // );
-      // const data = await response.json();
+  // useEffect(() =>{
+  //   (async () =>{
+  //     // data안의 results
+  //     const { results } = await (await fetch(
+  //       // 가짜 url 주소(next.config.js 에서 진짜 데이터를 받아옴 )
+  //       `/api/movies`
+  //     )).json();
 
-      // console.log(data)
+  //     // const response = await fetch(
+  //     //   `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}`
+  //     // );
+  //     // const data = await response.json();
 
-      setMovies(results)
-    })();
-  },[])
+  //     // console.log(data)
+
+  //     setMovies(results)
+  //   })();
+  // },[])
 
   return (
     <div className='container'>
       <Seo title='Home' />
-      {!movies && <h4>Loading...</h4>}
+      {/* {!movies && <h4>Loading...</h4>} */}
       {/* ? - movies가 존재하지 않으면 map이 실행되지 않음 */}
-      {movies?.map((movie) =>(
+      {results?.map((movie) =>(
         <div className="movie" key={movie.id}>
-        <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
+        <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} />
         <h4>{movie.original_title}</h4>
       </div>
       ))}
@@ -46,6 +47,9 @@ export default function Home(){
           grid-template-columns: 1fr 1fr;
           padding: 20px;
           gap: 20px;
+        }
+        .movie {
+          cursor: pointer;
         }
         .movie img {
           max-width: 100%;
@@ -63,4 +67,19 @@ export default function Home(){
       `}</style>
     </div>
   )
+}
+
+// SSR(서버사이드 렌더링)
+// 서버에서 실행되는 부분
+// 페이지가 유저에게 보여지기 전에 props를 받아오는 function 생성
+
+export async function getServerSideProps() {
+  const { results } = await (await fetch(`http://localhost:3000/api/movies`)).json();
+
+  return {
+    // props를 page에 넘겨줌
+    props: {
+      results,
+    }
+  }
 }
