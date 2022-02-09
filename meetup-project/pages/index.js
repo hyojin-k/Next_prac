@@ -1,3 +1,4 @@
+// import { useState, useEffect } from "react";
 import MeetupList from "../components/meetups/MeetupList";
 
 const DUMMY_MEETUPS = [
@@ -17,10 +18,27 @@ const DUMMY_MEETUPS = [
   }
 ]
 
-function Home() {
+function Home(props) {
+  // const [loadedMeetups, setLoadedMeetups] = useState([])
+  // useEffect(() =>{
+  //   setLoadedMeetups(DUMMY_MEETUPS)
+  // }, [])
+
   return (
-    <MeetupList meetups={DUMMY_MEETUPS} />
+    <MeetupList meetups={props.meetups} />
   );
+}
+
+// static-generation (pre-rendering)
+
+export async function getStaticProps(){
+  return {
+    props: {
+      meetups: DUMMY_MEETUPS
+    },
+    // 페이지에 새로운 요청이 생기면 10초에 한번씩 페이지 생성(규칙적으로 업데이트 되게 함)
+    revalidate:10
+  }
 }
 
 export default Home;
