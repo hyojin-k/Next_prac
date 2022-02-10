@@ -31,31 +31,31 @@ function Home(props) {
 
 // 서버에서만 실행되는 코드
 
-// SSR
-// 요청이 들어올 때마다 실행되므로 revalidate 설정할 필요 x
+// // SSR
+// // 요청이 들어올 때마다 실행되므로 revalidate 설정할 필요 x
 
-export async function getServerSideProps(context){
-  const req = context.req;
-  const res = context.res;
+// export async function getServerSideProps(context){
+//   const req = context.req;
+//   const res = context.res;
 
-  return {
-    props:{
-      meetups: DUMMY_MEETUPS
-    }
-  }
-}
-
-
-// // static-generation (pre-rendering)
-
-// export async function getStaticProps(){
 //   return {
-//     props: {
+//     props:{
 //       meetups: DUMMY_MEETUPS
-//     },
-//     // 페이지에 새로운 요청이 생기면 10초에 한번씩 페이지 생성(규칙적으로 업데이트 되게 함)
-//     revalidate:10
+//     }
 //   }
 // }
+
+
+// static-generation (pre-rendering)
+
+export async function getStaticProps(){
+  return {
+    props: {
+      meetups: DUMMY_MEETUPS
+    },
+    // 페이지에 새로운 요청이 생기면 10초에 한번씩 페이지 생성(규칙적으로 업데이트 되게 함)
+    revalidate:10
+  }
+}
 
 export default Home;
